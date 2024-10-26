@@ -1,0 +1,4 @@
+github.com/chasefleming/elem-go v0.29.0 h1:WwrjQcVn6xldhexluvl2Z3sgKi9HTMuzWeEXO4PHsmg=
+github.com/chasefleming/elem-go v0.29.0/go.mod h1:hz73qILBIKnTgOujnSMtEj20/epI+f6vg71RUilJAA4=
+github.com/mazen160/go-random v0.0.0-20210308102632-d2b501c85c03 h1:iM7JTVzKOYKWjzhGcgHAgFVQt5QfiHIVrRUaWPfh0Q4=
+github.com/mazen160/go-random v0.0.0-20210308102632-d2b501c85c03/go.mod h1:APoDd0B2pYeB5kU/g7Mw14mFsljp5HfzrC7arsKbi8U=
