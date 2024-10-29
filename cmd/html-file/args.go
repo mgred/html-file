@@ -17,8 +17,7 @@ type Options struct {
 	Base    string
 	From    string
 	Version bool
-	Scripts []html.Asset
-	Styles  []html.Asset
+	Assets  []html.Asset
 }
 
 type TokenType int
@@ -87,6 +86,7 @@ LOOP:
 				Props:  props,
 				Path:   arg.Value,
 				Insert: insert,
+				Type:   html.Style,
 			})
 		}
 	}
@@ -133,6 +133,7 @@ LOOP:
 				Props:  props,
 				Path:   arg.Value,
 				Insert: insert,
+				Type:   html.Script,
 			})
 		}
 	}
@@ -167,8 +168,7 @@ func ProcessArgs() (opts Options, err error) {
 	args := os.Args[1:]
 	tokens := TokenizeArgs(args)
 
-	var scripts []html.Asset
-	var styles []html.Asset
+	var assets []html.Asset
 	parser := NewParser(tokens)
 	for arg, value := parser.Next(); value != false; arg, value = parser.Next() {
 		if arg.Type == Option {
@@ -186,11 +186,11 @@ func ProcessArgs() (opts Options, err error) {
 			case "scripts", "s":
 				var s []html.Asset
 				s, err = ParseScriptSubOptions(parser, arg)
-				scripts = append(scripts, s...)
+				assets = append(assets, s...)
 			case "styles", "css", "c":
 				var s []html.Asset
 				s, err = ParseStylesSubOptions(parser, arg)
-				styles = append(styles, s...)
+				assets = append(assets, s...)
 			default:
 				err = fmt.Errorf("ERROR: Unknown option `%s` at position %d", arg.Raw, arg.Position)
 			}
@@ -201,8 +201,7 @@ func ProcessArgs() (opts Options, err error) {
 		}
 	}
 
-	opts.Scripts = scripts
-	opts.Styles = styles
+	opts.Assets = assets
 
 	return
 }

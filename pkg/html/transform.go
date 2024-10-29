@@ -8,11 +8,19 @@ import (
 	"github.com/chasefleming/elem-go/attrs"
 )
 
+type AssetType int
+
+const (
+	Script AssetType = iota
+	Style
+)
+
 type Asset struct {
 	Props  attrs.Props
 	Parent string
 	Path   string
 	Insert bool
+	Type   AssetType
 }
 
 func (a *Asset) Content() (string, error) {
@@ -24,38 +32,25 @@ func (a *Asset) Content() (string, error) {
 	return string(file), nil
 }
 
-func TransformToScriptElements(assets *[]Asset, hash string) []elem.Node {
-	return elem.TransformEach(*assets, func(s Asset) elem.Node {
-		if s.Insert {
-			c, _ := s.Content()
-			return elem.Script(s.Props, elem.Text(c))
-		}
-		props := attrs.Props{
-			attrs.Src: fmt.Sprintf("%s?r=%s", s.Path, hash),
-		}
-		return elem.Script(attrs.Merge(props, s.Props))
-	})
-}
-
-func TransformToLinkElements(assets *[]Asset, hash string) []elem.Node {
-	return elem.TransformEach(*assets, func(s Asset) elem.Node {
-		if s.Insert {
-			c, _ := s.Content()
-			return elem.Style(nil, elem.Text(c))
-		}
-		props := attrs.Props{
-			attrs.Href: fmt.Sprintf("%s?r=%s", s.Path, hash),
-			attrs.Rel:  "stylesheet",
-		}
-		return elem.Link(attrs.Merge(props, s.Props))
-	})
-}
-
-func FilterAssetsForParent(assets []Asset, parent string) (result []Asset) {
-	for _, a := range assets {
-		if a.Parent == parent {
-			result = append(result, a)
-		}
+func RenderScript(a *Asset, hash string) (string, error) {
+	if a.Insert {
+		c, err := a.Content()
+		return elem.Script(a.Props, elem.Text(c)).Render(), err
 	}
-	return
+	props := attrs.Merge(attrs.Props{
+		attrs.Src: fmt.Sprintf("%s?r=%s", a.Path, hash),
+	}, a.Props)
+	return elem.Script(props).Render(), nil
+}
+
+func RenderStyle(a *Asset, hash string) (string, error) {
+	if a.Insert {
+		c, err := a.Content()
+		return elem.Style(a.Props, elem.Text(c)).Render(), err
+	}
+	props := attrs.Merge(attrs.Props{
+		attrs.Href: fmt.Sprintf("%s?r=%s", a.Path, hash),
+		attrs.Rel:  "stylesheet",
+	}, a.Props)
+	return elem.Link(props).Render(), nil
 }
