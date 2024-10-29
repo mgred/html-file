@@ -187,7 +187,7 @@ func ProcessArgs() (opts Options, err error) {
 				var s []html.Asset
 				s, err = ParseScriptSubOptions(parser, arg)
 				assets = append(assets, s...)
-			case "styles", "css", "c":
+			case "styles", "S":
 				var s []html.Asset
 				s, err = ParseStylesSubOptions(parser, arg)
 				assets = append(assets, s...)
