@@ -39,6 +39,10 @@ func TransformToScriptElements(assets *[]Asset, hash string) []elem.Node {
 
 func TransformToLinkElements(assets *[]Asset, hash string) []elem.Node {
 	return elem.TransformEach(*assets, func(s Asset) elem.Node {
+		if s.Insert {
+			c, _ := s.Content()
+			return elem.Style(nil, elem.Text(c))
+		}
 		props := attrs.Props{
 			attrs.Href: fmt.Sprintf("%s?r=%s", s.Path, hash),
 			attrs.Rel:  "stylesheet",

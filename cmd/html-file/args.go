@@ -62,18 +62,22 @@ func (p *Parser) current() (Token, bool) {
 
 func ParseStylesSubOptions(p *Parser, prev Token) (result []html.Asset, err error) {
 	var props = attrs.Props{}
+	var insert bool
+LOOP:
 	for arg, value := p.Next(); value != false; arg, value = p.Next() {
 		if arg.Type == Option {
-			if arg.Value == "media" || arg.Value == "m" {
+			switch arg.Value {
+			case "insert", "i":
+				insert = true
+			case "media", "m":
 				next, e := p.Next()
 				if !e {
 					return result, noArgumentForOption(arg)
 				}
 				props[attrs.Media] = next.Value
-				continue
-			} else {
+			default:
 				p.Reset()
-				break
+				break LOOP
 			}
 		}
 
@@ -82,6 +86,7 @@ func ParseStylesSubOptions(p *Parser, prev Token) (result []html.Asset, err erro
 				Parent: "head",
 				Props:  props,
 				Path:   arg.Value,
+				Insert: insert,
 			})
 		}
 	}
