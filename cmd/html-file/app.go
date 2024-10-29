@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mgred/html-filer/pkg/cli"
 	"github.com/mgred/html-filer/pkg/html"
 	"github.com/mgred/html-filer/pkg/utils"
 )
@@ -20,7 +21,7 @@ func GetOutput(path string) (*os.File, error) {
 	return os.Stdout, nil
 }
 
-func RunApp(opts Options) (err error) {
+func RunApp(opts cli.Options) (err error) {
 	if opts.Help {
 		fmt.Fprint(os.Stdout, GetHelpMessage())
 		os.Exit(0)

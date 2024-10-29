@@ -3,10 +3,12 @@ package main
 import (
 	"log"
 	"os"
+
+	"github.com/mgred/html-filer/pkg/cli"
 )
 
 func main() {
-	opts, err := ProcessArgs()
+	opts, err := cli.ProcessArgs()
 
 	handleError(err)
 
