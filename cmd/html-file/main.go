@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 )
 
 func main() {
@@ -10,6 +11,8 @@ func main() {
 	handleError(err)
 
 	handleError(RunApp(opts))
+
+	os.Exit(0)
 }
 
 func handleError(err error) {
