@@ -22,39 +22,7 @@ func GetOutput(path string) (*os.File, error) {
 
 func RunApp(opts Options) (err error) {
 	if opts.Help {
-		fmt.Fprintf(os.Stdout, `
-SYNOPSIS:
-  %[1]s [--base <base>] [--out <output>] [--title <title>] <asset>...
-  %[1]s [options] --scripts [--module] [--async | --insert] [--head] <asset>...
-  %[1]s [options] --styles [--media] [--insert] <asset>...
-
-DESCRIPTION:
-
-  %[1]s --scripts [options] <asset>...
-      Add the following assets as scripts.
-
-      By default the tags will be written to the bottom of the <body>.
-      The --head option changes this behavior and writes everything to <head>.
-
-  %[1]s --styles [options] <asset>...
-    TBD
-
-OPTIONS:
-
-  -h, --help                   Print this Help message
-  -v, --version                Print version
-  -o, --out                    Output file to write to
-  -b, --base                   Base path to set, default "/"
-  -t, --title                  Set content of <title> element
-  -s, --scripts                Add scripts
-      -m, --module             Set type "module"
-      -a, --async              Set "async" attribute
-      -h, --head               Set to head of document
-      -i, --insert             Copy content of the file into the tag
-  -S, --styles                 Add stylesheets
-      -m, --media              Set media attribute
-      -i, --insert             Copy content of the file into the tag
-`, "html-file")
+		fmt.Fprint(os.Stdout, GetHelpMessage())
 		os.Exit(0)
 	}
 
@@ -65,7 +33,7 @@ OPTIONS:
 
 	output, err := GetOutput(opts.Out)
 	if err != nil {
-		return fmt.Errorf("ERROR: Could not open Output file `%s`! [%s]", opts.Out, err.Error())
+		return fmt.Errorf("ERROR: could not open output file `%s`! [%s]", opts.Out, err.Error())
 	}
 	defer func() {
 		e := output.Close()
