@@ -3,6 +3,7 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/chasefleming/elem-go/attrs"
@@ -169,6 +170,10 @@ func ProcessArgs(args []string) (opts Options, err error) {
 	var assets []html.Asset
 	parser := NewParser(tokens)
 	for arg, value := parser.Next(); value != false; arg, value = parser.Next() {
+		if arg.Type == Argument {
+			assets = append(assets, ParseAsset(arg))
+		}
+
 		if arg.Type == Option {
 			switch arg.Value {
 			case "help", "h":
@@ -202,6 +207,27 @@ func ProcessArgs(args []string) (opts Options, err error) {
 	opts.Assets = assets
 
 	return
+}
+
+func ParseAsset(a Token) html.Asset {
+	switch filepath.Ext(a.Value) {
+	case ".js", ".mjs":
+		return html.Asset{
+			Type:   html.Script,
+			Parent: "body",
+			Path:   a.Value,
+			Insert: false,
+		}
+	case ".css":
+		return html.Asset{
+			Type:   html.Style,
+			Parent: "head",
+			Insert: false,
+			Path:   a.Value,
+		}
+	}
+
+	return html.Asset{}
 }
 
 func noArgumentForOption(o Token) error {
