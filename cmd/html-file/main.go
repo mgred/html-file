@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	opts, err := cli.ProcessArgs()
+	opts, err := cli.ProcessArgs(os.Args[1:])
 
 	handleError(err)
 

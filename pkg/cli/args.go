@@ -3,7 +3,6 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/chasefleming/elem-go/attrs"
@@ -164,8 +163,7 @@ func unwrapNextWithErr(p *Parser) (string, error) {
 	return "", errors.New("Could not read next Option")
 }
 
-func ProcessArgs() (opts Options, err error) {
-	args := os.Args[1:]
+func ProcessArgs(args []string) (opts Options, err error) {
 	tokens := TokenizeArgs(args)
 
 	var assets []html.Asset
