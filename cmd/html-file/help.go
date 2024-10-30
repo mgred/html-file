@@ -18,7 +18,10 @@ DESCRIPTION:
       The --head option changes this behavior and writes everything to <head>.
 
   %[1]s --styles [options] <asset>...
-    TBD
+      Add the following assets as stylesheets.
+
+      The given assets will web <link>ed unless the --insert options is set.
+      In this case the content of the asset will be copied into a <style> tag.
 
 OPTIONS:
 
