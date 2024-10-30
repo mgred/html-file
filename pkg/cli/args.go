@@ -186,6 +186,10 @@ func ProcessArgs(args []string) (opts Options, err error) {
 				opts.Out, err = unwrapNextWithErr(parser)
 			case "title", "t":
 				opts.Title, err = unwrapNextWithErr(parser)
+			case "assets", "a":
+				var a []html.Asset
+				a, err = ParseNextArgumentsAsAssets(parser, arg)
+				assets = append(assets, a...)
 			case "scripts", "s":
 				var s []html.Asset
 				s, err = ParseScriptSubOptions(parser, arg)
@@ -228,6 +232,23 @@ func ParseAsset(a Token) html.Asset {
 	}
 
 	return html.Asset{}
+}
+
+func ParseNextArgumentsAsAssets(p *Parser, t Token) (result []html.Asset, err error) {
+	for arg, value := p.Next(); value != false; arg, value = p.Next() {
+		if arg.Type == Argument {
+			result = append(result, ParseAsset(arg))
+		} else {
+			p.Reset()
+			break
+		}
+	}
+
+	if len(result) == 0 {
+		return result, noArgumentForOption(t)
+	}
+
+	return
 }
 
 func noArgumentForOption(o Token) error {

@@ -5,6 +5,7 @@ import "fmt"
 const HELP_MESSAGE = `
 SYNOPSIS:
   %[1]s [--base <base>] [--out <output>] [--title <title>] <asset>...
+  %[1]s [options] --assets <asset>...
   %[1]s [options] --scripts [--module] [--async | --insert] [--head] <asset>...
   %[1]s [options] --styles [--media] [--insert] <asset>...
 
@@ -26,6 +27,7 @@ OPTIONS:
   -o, --out                    Output file to write to
   -b, --base                   Base path to set, default "/"
   -t, --title                  Set content of <title> element
+  -a, --assets                 General option for left over assets
   -s, --scripts                Add scripts
       -m, --module             Set type "module"
       -a, --async              Set "async" attribute
