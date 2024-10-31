@@ -14,7 +14,11 @@ go build ./cmd/html-file
 
 ```sh
 html-file foo.mjs bar.js baz.css
+```
 
+Prints the following to `stdout`:
+
+```html
 <!doctype html>
 <html lang="en">
   <head>
