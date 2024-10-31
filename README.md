@@ -35,3 +35,13 @@ Prints the following to `stdout`:
 ```
 
 See the `--help` for more options.
+
+## Acknowledgement
+
+- [`html-insert-assets`](https://github.com/jbedard/html-insert-assets)
+- [`elem-go`](https://github.com/chasefleming/elem-go)
+- [`go-random`](https://github.com/mazen160/go-random)
+
+## License
+
+Source code in this repository is licensed under the [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text)
