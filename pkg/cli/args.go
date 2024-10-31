@@ -215,10 +215,20 @@ func ProcessArgs(args []string) (opts Options, err error) {
 
 func ParseAsset(a Token) html.Asset {
 	switch filepath.Ext(a.Value) {
-	case ".js", ".mjs":
+	case ".js":
 		return html.Asset{
 			Type:   html.Script,
-			Parent: "body",
+			Parent: html.BODY_TAG,
+			Path:   a.Value,
+			Insert: false,
+		}
+	case ".mjs":
+		return html.Asset{
+			Type:   html.Script,
+			Parent: html.BODY_TAG,
+			Props: attrs.Props{
+				attrs.Type: "module",
+			},
 			Path:   a.Value,
 			Insert: false,
 		}
