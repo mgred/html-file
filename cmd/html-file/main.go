@@ -7,12 +7,14 @@ import (
 	"github.com/mgred/html-filer/pkg/cli"
 )
 
+var opts = cli.Options{
+	Base: "/",
+}
+
 func main() {
-	opts, err := cli.ProcessArgs(os.Args[1:])
+	handleError(cli.ProcessArgs(os.Args[1:], &opts))
 
-	handleError(err)
-
-	handleError(RunApp(opts))
+	handleError(RunApp(&opts))
 
 	os.Exit(0)
 }

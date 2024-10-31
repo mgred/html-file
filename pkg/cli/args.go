@@ -164,7 +164,7 @@ func unwrapNextWithErr(p *Parser) (string, error) {
 	return "", errors.New("Could not read next Option")
 }
 
-func ProcessArgs(args []string) (opts Options, err error) {
+func ProcessArgs(args []string, opts *Options) (err error) {
 	tokens := TokenizeArgs(args)
 
 	var assets []html.Asset
