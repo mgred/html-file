@@ -54,6 +54,8 @@ func RunApp(opts *cli.Options) (err error) {
 			content, err = html.RenderScript(&asset, hash)
 		case html.Style:
 			content, err = html.RenderStyle(&asset, hash)
+		case html.Link:
+			content, err = html.RenderLink(&asset, hash)
 		}
 
 		if err != nil {

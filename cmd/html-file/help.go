@@ -23,6 +23,9 @@ DESCRIPTION:
       The given assets will web <link>ed unless the --insert options is set.
       In this case the content of the asset will be copied into a <style> tag.
 
+  %[1]s --favicon [options] <asset>
+      Add the following asset as favicon.
+
 OPTIONS:
 
   -h, --help                   Print this Help message
@@ -39,6 +42,8 @@ OPTIONS:
   -S, --styles                 Add stylesheets
       -m, --media              Set media attribute
       -i, --insert             Copy content of the file into the tag
+	-f, favicon                  Link a favicon
+      -z, --sizes              Set the sizes width by length, e.g 25x25
 
 `
 

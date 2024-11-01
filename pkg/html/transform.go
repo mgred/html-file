@@ -13,6 +13,7 @@ type AssetType int
 const (
 	Script AssetType = iota
 	Style
+	Link
 )
 
 type Asset struct {
@@ -38,7 +39,7 @@ func RenderScript(a *Asset, hash string) (string, error) {
 		return elem.Script(a.Props, elem.Text(c)).Render(), err
 	}
 	props := attrs.Merge(attrs.Props{
-		attrs.Src: fmt.Sprintf("%s?r=%s", a.Path, hash),
+		attrs.Src: hashedPath(a.Path, hash),
 	}, a.Props)
 	return elem.Script(props).Render(), nil
 }
@@ -48,9 +49,17 @@ func RenderStyle(a *Asset, hash string) (string, error) {
 		c, err := a.Content()
 		return elem.Style(a.Props, elem.Text(c)).Render(), err
 	}
+	a.Props[attrs.Rel] = "stylesheet"
+	return RenderLink(a, hash)
+}
+
+func RenderLink(a *Asset, hash string) (string, error) {
 	props := attrs.Merge(attrs.Props{
-		attrs.Href: fmt.Sprintf("%s?r=%s", a.Path, hash),
-		attrs.Rel:  "stylesheet",
+		attrs.Href: hashedPath(a.Path, hash),
 	}, a.Props)
 	return elem.Link(props).Render(), nil
+}
+
+func hashedPath(path string, hash string) string {
+	return fmt.Sprintf("%s?r=%s", path, hash)
 }

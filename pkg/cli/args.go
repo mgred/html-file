@@ -144,6 +144,47 @@ LOOP:
 	return
 }
 
+func ParseFaviconSubOptions(p *Parser, prev Token) (result []html.Asset, err error) {
+	props := attrs.Props{
+		attrs.Rel: "icon",
+	}
+LOOP:
+	for arg, value := p.Next(); value != false; arg, value = p.Next() {
+		if arg.Type == Option {
+			switch arg.Value {
+			case "sizes", "z":
+				next, e := p.Next()
+				if !e {
+					return result, noArgumentForOption(arg)
+				}
+				props[attrs.Sizes] = next.Value
+			default:
+				p.Reset()
+				break LOOP
+			}
+		}
+
+		if arg.Type == Argument {
+			result = append(result, html.Asset{
+				Parent: html.HEAD_TAG,
+				Props:  props,
+				Insert: false,
+				Path:   arg.Value,
+				Type:   html.Link,
+			})
+		}
+	}
+
+	if len(result) == 0 {
+		return result, noArgumentForOption(prev)
+	}
+
+	if len(result) > 1 {
+		return result, tooMuchArgumentsForOption(prev)
+	}
+	return
+}
+
 func TokenizeArgs(args []string) []Token {
 	result := make([]Token, len(args))
 	for i, arg := range args {
@@ -198,6 +239,10 @@ func ProcessArgs(args []string, opts *Options) (err error) {
 				var s []html.Asset
 				s, err = ParseStylesSubOptions(parser, arg)
 				assets = append(assets, s...)
+			case "favicon", "f":
+				var f []html.Asset
+				f, err = ParseFaviconSubOptions(parser, arg)
+				assets = append(assets, f...)
 			default:
 				err = fmt.Errorf("ERROR: Unknown option `%s` at position %d", arg.Raw, arg.Position)
 			}
@@ -232,6 +277,17 @@ func ParseAsset(a Token) html.Asset {
 			Path:   a.Value,
 			Insert: false,
 		}
+	case ".ico":
+		return html.Asset{
+			Parent: html.HEAD_TAG,
+			Props: attrs.Props{
+				attrs.Rel: "icon",
+				attrs.Src: a.Value,
+			},
+			Insert: false,
+			Path:   a.Value,
+			Type:   html.Link,
+		}
 	case ".css":
 		return html.Asset{
 			Type:   html.Style,
@@ -263,4 +319,8 @@ func ParseNextArgumentsAsAssets(p *Parser, t Token) (result []html.Asset, err er
 
 func noArgumentForOption(o Token) error {
 	return fmt.Errorf("ERROR: No argument(s) for `%s` at position %d", o.Raw, o.Position)
+}
+
+func tooMuchArgumentsForOption(o Token) error {
+	return fmt.Errorf("ERROR: Too much arguments for `%s` at position %d", o.Raw, o.Position)
 }
