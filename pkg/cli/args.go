@@ -62,12 +62,15 @@ func (p *Parser) current() (Token, bool) {
 func ParseStylesSubOptions(p *Parser, prev Token) (result []html.Asset, err error) {
 	var props = attrs.Props{}
 	var insert bool
+	var preload bool
 LOOP:
 	for arg, value := p.Next(); value != false; arg, value = p.Next() {
 		if arg.Type == Option {
 			switch arg.Value {
 			case "insert", "i":
 				insert = true
+			case "preload", "p":
+				preload = true
 			case "media", "m":
 				next, e := p.Next()
 				if !e {
@@ -82,11 +85,12 @@ LOOP:
 
 		if arg.Type == Argument {
 			result = append(result, html.Asset{
-				Parent: "head",
-				Props:  props,
-				Path:   arg.Value,
-				Insert: insert,
-				Type:   html.Style,
+				Preload: preload,
+				Parent:  "head",
+				Props:   props,
+				Path:    arg.Value,
+				Insert:  insert,
+				Type:    html.Style,
 			})
 		}
 	}
@@ -100,11 +104,14 @@ LOOP:
 func ParseScriptSubOptions(p *Parser, prev Token) (result []html.Asset, err error) {
 	var props = attrs.Props{}
 	var insert bool
+	var preload bool
 	parent := "body"
 LOOP:
 	for arg, value := p.Next(); value != false; arg, value = p.Next() {
 		if arg.Type == Option {
 			switch arg.Value {
+			case "preload", "p":
+				preload = true
 			case "module", "m":
 				props[attrs.Type] = "module"
 			case "head", "h":
@@ -128,12 +135,14 @@ LOOP:
 			}
 		}
 		if arg.Type == Argument {
+
 			result = append(result, html.Asset{
-				Parent: parent,
-				Props:  props,
-				Path:   arg.Value,
-				Insert: insert,
-				Type:   html.Script,
+				Preload: preload,
+				Parent:  parent,
+				Props:   props,
+				Path:    arg.Value,
+				Insert:  insert,
+				Type:    html.Script,
 			})
 		}
 	}

@@ -33,16 +33,18 @@ OPTIONS:
   -o, --out                    Output file to write to
   -b, --base                   Base path to set, default "/"
   -t, --title                  Set content of <title> element
-  -a, --assets                 General option for left over assets
+  -A, --assets                 General option for left over assets
   -s, --scripts                Add scripts
-      -m, --module             Set type "module"
       -a, --async              Set "async" attribute
       -h, --head               Set to head of document
       -i, --insert             Copy content of the file into the tag
+      -m, --module             Set type "module"
+      -p, --preload            Mark this script for preload
   -S, --styles                 Add stylesheets
-      -m, --media              Set media attribute
       -i, --insert             Copy content of the file into the tag
-	-f, favicon                  Link a favicon
+      -m, --media              Set media attribute
+      -p, --preload            Mark this style for preload
+  -f, favicon                  Link a favicon
       -z, --sizes              Set the sizes width by length, e.g 25x25
 
 `

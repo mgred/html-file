@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/chasefleming/elem-go/attrs"
 	"github.com/mgred/html-filer/pkg/cli"
 	"github.com/mgred/html-filer/pkg/html"
 	"github.com/mgred/html-filer/pkg/utils"
@@ -46,6 +47,7 @@ func RunApp(opts *cli.Options) (err error) {
 	hash := utils.GenerateHash()
 	var head bytes.Buffer
 	var body bytes.Buffer
+	var preload bytes.Buffer
 
 	for _, asset := range opts.Assets {
 		var content string
@@ -56,6 +58,29 @@ func RunApp(opts *cli.Options) (err error) {
 			content, err = html.RenderStyle(&asset, hash)
 		case html.Link:
 			content, err = html.RenderLink(&asset, hash)
+		}
+
+		if asset.Preload {
+			if asset.Insert {
+				// Print warning? No need to preload things that are included into html
+			}
+			var content string
+			props := attrs.Props{
+				attrs.Rel: "preload",
+			}
+			switch asset.Type {
+			case html.Script:
+				props["as"] = "script"
+			case html.Style:
+				props["as"] = "style"
+			}
+
+			a := html.Asset{
+				Path:  asset.Path,
+				Props: props,
+			}
+			content, err = html.RenderLink(&a, hash)
+			preload.WriteString(content)
 		}
 
 		if err != nil {
@@ -73,7 +98,7 @@ func RunApp(opts *cli.Options) (err error) {
 		Base:  opts.Base,
 		Title: opts.Title,
 		Body:  body.String(),
-		Head:  head.String(),
+		Head:  preload.String() + head.String(),
 	}); err != nil {
 		return fmt.Errorf("ERROR: Could not write to Output! [%s]", err.Error())
 	}

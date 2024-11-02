@@ -17,11 +17,12 @@ const (
 )
 
 type Asset struct {
-	Props  attrs.Props
-	Parent string
-	Path   string
-	Insert bool
-	Type   AssetType
+	Preload bool
+	Props   attrs.Props
+	Parent  string
+	Path    string
+	Insert  bool
+	Type    AssetType
 }
 
 func (a *Asset) Content() (string, error) {
