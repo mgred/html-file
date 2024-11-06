@@ -301,6 +301,7 @@ func ParseAsset(a Token) html.Asset {
 		return html.Asset{
 			Type:   html.Style,
 			Parent: "head",
+			Props: attrs.Props{},
 			Insert: false,
 			Path:   a.Value,
 		}
