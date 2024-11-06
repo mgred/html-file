@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link as="style" href="a.css?r=25032019" rel="preload"><link as="style" href="b.css?r=25032019" rel="preload"><link href="a.css?r=25032019" rel="stylesheet"><link href="b.css?r=25032019" rel="stylesheet"><link href="favicon.ico?r=25032019" rel="icon">
+  </head>
+  <body>
+      <script async src="a.js?r=25032019"></script><script async src="b.js?r=25032019"></script><script async src="c.js?r=25032019"></script><script async src="d.js?r=25032019" type="module"></script><script async src="e.js?r=25032019" type="module"></script><script async src="f.js?r=25032019" type="module"></script>
+  </body>
+</html>

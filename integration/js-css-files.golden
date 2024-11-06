@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="foo.css?r=25032019" rel="stylesheet"><link href="bar.css?r=25032019" rel="stylesheet"><link href="baz.css?r=25032019" rel="stylesheet">
+  </head>
+  <body>
+      <script src="foo.js?r=25032019"></script><script src="bar.js?r=25032019"></script><script src="baz.js?r=25032019"></script>
+  </body>
+</html>
