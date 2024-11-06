@@ -2,12 +2,16 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/mazen160/go-random"
 )
 
 func GenerateHash() string {
+	if h := os.Getenv("HTML_FILE_HASH"); h != "" {
+		return h
+	}
 	hash, err := random.String(8)
 	if err != nil {
 		return fmt.Sprintf("%d", time.Now().Unix())
